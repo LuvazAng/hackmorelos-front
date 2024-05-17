@@ -16,6 +16,7 @@ function Home() {
             Registrarse
           </button>
         </Link>
+        <Link to={"/dashboard"}>CLick</Link>
       </div>
     </div>
   );
