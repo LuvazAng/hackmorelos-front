@@ -1,0 +1,26 @@
+.mood-option input,
+.activity-option input,
+.food-option input {
+  display: none;
+}
+
+.mood-option,
+.activity-option,
+.food-option {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.selected {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.mood-option:hover,
+.activity-option:hover,
+.food-option:hover {
+  background-color: #4a90e2;
+  color: white;
+}

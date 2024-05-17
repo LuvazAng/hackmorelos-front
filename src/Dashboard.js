@@ -1,12 +1,13 @@
 import { React } from "react";
 
-import { Pastel } from "./Pastel";
+import MoodTracker from "./MoodTracker";
 
 function Dashboard() {
   return (
     <div>
-      <Pastel />
+      <MoodTracker />
     </div>
   );
 }
+
 export default Dashboard;
