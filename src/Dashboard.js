@@ -1,11 +1,11 @@
 import { React } from "react";
 
-import MoodTracker from "./MoodTracker";
+import Formulario from "./formulario";
 
 function Dashboard() {
   return (
     <div>
-      <MoodTracker />
+      <Formulario />
     </div>
   );
 }
