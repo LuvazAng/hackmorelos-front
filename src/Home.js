@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function Home() {
   return (
     <div className="text-center text-white">
-      <h1 className="text-4xl mb-8">BIENVENIDO A [INSERTAR NOMBRE]</h1>
+      <h1 className="text-4xl mb-8">BIENVENIDO A VEDIAG</h1>
       <div className="flex flex-col items-center space-y-4">
         <Link to="/login">
           <button className="w-48 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg">
