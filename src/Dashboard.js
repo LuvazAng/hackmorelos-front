@@ -1,6 +1,12 @@
 import { React } from "react";
-import { SideBar } from "./SideBar";
+
+import { Pastel } from "./Pastel";
+
 function Dashboard() {
-  return <SideBar />;
+  return (
+    <div>
+      <Pastel />
+    </div>
+  );
 }
 export default Dashboard;
