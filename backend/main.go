@@ -1,14 +1,18 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/rs/cors"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// User representa la estructura del usuario a registrar
 type User struct {
 	ID         int    `json:"ID"`
 	Email      string `json:"Email"`
@@ -18,13 +22,32 @@ type User struct {
 	Al4tura    string `json:"Altura"`
 }
 
-// response estructura para enviar la respuesta
 type response struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 }
 
-// registerHandler maneja las solicitudes POST para registrar usuarios
+func connection() {
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+
+	opts := options.Client().ApplyURI("mongodb+srv://20233tn059:aq23WFyKzWdORev1@hackaton.xajs8la.mongodb.net/?retryWrites=true&w=majority&appName=Hackaton").SetServerAPIOptions(serverAPI)
+
+	client, err := mongo.Connect(context.TODO(), opts)
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			panic(err)
+		}
+	}()
+	if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err(); err != nil {
+		panic(err)
+	}
+	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
+
+}
+
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
@@ -48,6 +71,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	connection()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/register", registerHandler)
 
