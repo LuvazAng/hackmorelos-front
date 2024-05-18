@@ -15,11 +15,12 @@ import (
 
 type User struct {
 	ID         int    `json:"ID"`
+	Nombre     string `json:"Nombre"`
 	Email      string `json:"Email"`
 	Contrasena string `json:"Contrasena"`
 	Edad       string `json:"Edad"`
 	Sexo       string `json:"Sexo"`
-	Al4tura    string `json:"Altura"`
+	Altura     string `json:"Altura"`
 }
 
 type response struct {
@@ -27,7 +28,7 @@ type response struct {
 	Message string `json:"message"`
 }
 
-func connection() {
+func insertDb(table string, nombre string, email string, constrasena string, edad string, sexo string, altura string) {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 
 	opts := options.Client().ApplyURI("mongodb+srv://20233tn059:aq23WFyKzWdORev1@hackaton.xajs8la.mongodb.net/?retryWrites=true&w=majority&appName=Hackaton").SetServerAPIOptions(serverAPI)
@@ -46,6 +47,11 @@ func connection() {
 	}
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 
+	coll := client.Database("hackaton").Collection(table)
+	doc := User{ID: 1, Nombre: nombre, Email: email, Contrasena: constrasena, Edad: edad, Sexo: sexo, Altura: altura}
+	result, err := coll.InsertOne(context.TODO(), doc)
+	fmt.Printf("Inserted document with _id: %v\n", result.InsertedID)
+
 }
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {
@@ -60,18 +66,17 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error al procesar la solicitud", http.StatusBadRequest)
 		return
 	}
-
-	// Aquí puedes agregar lógica para guardar el usuario en una base de datos
+	insertDb("User", user.Nombre, user.Email, user.Contrasena, user.Edad, user.Sexo, user.Altura)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response{
 		Status:  "success",
-		Message: "Usuario registrado exitosamente",
+		Message: user.Email,
 	})
 }
 
 func main() {
-	connection()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/register", registerHandler)
 
